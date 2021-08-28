@@ -1,0 +1,13 @@
+{
+  "name": "Google search logger",
+  "description": "Send google search results to a server",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": ["storage", "activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
