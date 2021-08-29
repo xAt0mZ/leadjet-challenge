@@ -1,4 +1,4 @@
-package queries
+package query
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/xat0mz/leadjet-challenge/api/http/request"
 )
 
-func (h *Handler) queriesPost(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
+func (h *Handler) queryPost(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 
 	var payload queryPayload
 	err := request.DecodeJSONPayload(r, &payload)

@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/xat0mz/leadjet-challenge/api/http/handler"
-	"github.com/xat0mz/leadjet-challenge/api/queries"
+	"github.com/xat0mz/leadjet-challenge/api/query"
 )
 
 type IServer interface {
@@ -23,7 +23,7 @@ type Server struct {
 
 func (server *Server) Init() {
 	server.handler = &handler.Handler{
-		QueriesHandler: queries.NewHandler(),
+		QueryHandler: query.NewHandler(),
 	}
 }
 

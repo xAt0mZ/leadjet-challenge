@@ -1,4 +1,4 @@
-package queries
+package query
 
 import (
 	"net/http"
@@ -24,5 +24,5 @@ func NewHandler() *Handler {
 
 // initRouter binds paths and methods to handler functions
 func (h *Handler) initRouter() {
-	h.Handle("/queries", httperror.LoggerHandler(h.queriesPost)).Methods(http.MethodPost)
+	h.Handle("/query", httperror.LoggerHandler(h.queryPost)).Methods(http.MethodPost)
 }
