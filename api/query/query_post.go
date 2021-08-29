@@ -1,6 +1,7 @@
 package query
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -16,7 +17,10 @@ func (h *Handler) queryPost(w http.ResponseWriter, r *http.Request) *httperror.H
 		return &httperror.HandlerError{StatusCode: http.StatusBadRequest, Message: "Invalid request payload", Err: err}
 	}
 
-	fmt.Printf("%+v\n", payload)
-
+	marshalled, err := json.MarshalIndent(payload, "", "  ")
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+	fmt.Print(string(marshalled))
 	return nil
 }
