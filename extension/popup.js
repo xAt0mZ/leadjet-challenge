@@ -1,24 +1,29 @@
-// Initialize button with user's preferred color
-let changeColor = document.getElementById("changeColor");
+import * as Consts from './query/consts.js';
+import { Result } from './query/types.js';
 
-chrome.storage.sync.get("color", ({ color }) => {
-  changeColor.style.backgroundColor = color;
+import { extractResultsFromHtml } from './query/extractor.js';
+import QueryService from './query/rest.js';
+
+let saveResultsButton = document.getElementById("saveResultsButton");
+
+saveResultsButton.addEventListener("click", async () => {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+  const query = tab.url.match(/(?:.*?)\.google\.(?:\w+?)\/search\?q=(.*?)&(?:.*)/);
+
+  if (query) {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      function: extractResultsFromHtml,
+      args: [Consts]
+    },
+      (results) => onResultsExtracted(query, results));
+  }
 });
 
-// When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+function onResultsExtracted(query, res) {
+  const queryString = query[1];
+  const results = res[0].result.map((r) => new Result(r));
 
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: setPageBackgroundColor,
-  });
-});
-
-// The body of this function will be executed as a content script inside the
-// current page
-function setPageBackgroundColor() {
-  chrome.storage.sync.get("color", ({ color }) => {
-    document.body.style.backgroundColor = color;
-  });
+  QueryService.post(queryString, results);
 }

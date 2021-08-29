@@ -1,9 +1,10 @@
 {
-  "name": "Google search logger",
+  "name": "Google search saver",
   "description": "Send google search results to a server",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["http://localhost/*"],
   "background": {
     "service_worker": "background.js"
   },
